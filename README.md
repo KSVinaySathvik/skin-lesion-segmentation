@@ -1,5 +1,7 @@
 # Skin Lesion Segmentation
 
+Team project by J Kowshik and K S Vinay Sathvik, completed in the second year of the B.E. in Artificial Intelligence and Machine Learning at B.N.M. Institute of Technology, Bengaluru.
+
 Unsupervised segmentation of dermoscopic images from the Kaggle
 [Skin Cancer: Malignant vs. Benign](https://www.kaggle.com/datasets/fanconic/skin-cancer-malignant-vs-benign)
 dataset (224 x 224 RGB images, two classes). The notebook separates the lesion from the surrounding skin and crops a region of interest that can be passed to a downstream classifier.
