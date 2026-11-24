@@ -1,0 +1,6 @@
+numpy
+scipy
+matplotlib
+scikit-image>=0.19
+scikit-learn
+kagglehub
