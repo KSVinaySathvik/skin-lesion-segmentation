@@ -1,7 +1,6 @@
 # Skin Lesion Segmentation
 
 Team project by J Kowshik and K S Vinay Sathvik, completed in the second year of the B.E. in Artificial Intelligence and Machine Learning at B.N.M. Institute of Technology, Bengaluru.
-The original repository is [Techie-kowshi/Skin_Cancer_Lesion_Classification](https://github.com/Techie-kowshi/Skin_Cancer_Lesion_Classification); this copy keeps its full commit history.
 
 Unsupervised segmentation of dermoscopic images from the Kaggle
 [Skin Cancer: Malignant vs. Benign](https://www.kaggle.com/datasets/fanconic/skin-cancer-malignant-vs-benign)
