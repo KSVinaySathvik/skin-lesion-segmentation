@@ -4,24 +4,33 @@ Team project by J Kowshik and K S Vinay Sathvik, completed in the second year of
 
 Unsupervised segmentation of dermoscopic images from the Kaggle
 [Skin Cancer: Malignant vs. Benign](https://www.kaggle.com/datasets/fanconic/skin-cancer-malignant-vs-benign)
-dataset (224 x 224 RGB images, two classes). The notebook separates the lesion from the surrounding skin and crops a region of interest that can be passed to a downstream classifier.
+dataset (224 x 224 RGB images from the ISIC archive). The notebook separates the lesion from the surrounding skin and crops a region of interest (ROI) that can be passed to a classifier.
 
-## Pipeline
+![Segmentation examples](figures/segmentation_examples.png)
 
-1. **Data.** Download the dataset with `kagglehub` and index the malignant and benign training images.
-2. **Clustering.** Run K-Means on grayscale pixel intensities. The number of clusters is chosen from the elbow curve (k = 2 separates lesion and skin).
-3. **Lesion cluster selection.** Take the cluster with the lowest mean intensity as the lesion mask.
-4. **Mask refinement.** Smooth the mask with a disk mean filter and binarise it with Otsu's threshold.
-5. **ROI extraction.** Multiply the refined mask into each RGB channel, then trim residual border regions by column statistics.
-6. **Colour-space variants.** Repeat the clustering on RGB pixel vectors (`cv2.kmeans`) and in L\*a\*b\* space for comparison.
-7. **Dataset summary.** Class counts and a resized grayscale export of the malignant images.
+*Lesion boundaries (green) on the first twelve images of the ISIC archive, resized to 224 x 224. ISIC_0000004 is a failure case: a red vascular lesion inside a small dermoscope field of view.*
+
+## Method
+
+1. **Field of view.** Dark regions connected to the image border are treated as the dermoscope vignette and excluded. Without this step the dark corners end up in the same cluster as the lesion.
+2. **Clustering.** K-Means (k = 2, chosen from the elbow curve) on grayscale intensities inside the field of view. The darker cluster is the lesion candidate.
+3. **Refinement.** Morphological opening and closing, hole filling and removal of small blobs. If several regions remain, the one that is large and close to the image centre is kept.
+4. **ROI export.** The bounding box of the final mask is cropped, resized to 128 x 128 and written to `rois/<class>/`.
 
 ## Running
 
-Open `Skin_Cancer_Lesion_Classification.ipynb` on Kaggle or in Google Colab and run the cells in order. The paths assume the Kaggle input layout (`/kaggle/input/skin-cancer-malignant-vs-benign/...`).
+Open `Skin_Cancer_Lesion_Classification.ipynb` on Kaggle with the dataset attached, or in Google Colab, where the data cell downloads it with `kagglehub`. Then run all cells.
 
-Dependencies: `numpy`, `pandas`, `matplotlib`, `scikit-image`, `scikit-learn`, `scipy`, `opencv-python`, `kagglehub`.
+```sh
+pip install -r requirements.txt
+```
 
-## Scope
+## Limitations
 
-This is a segmentation and preprocessing study. No classifier is trained, so the notebook does not report malignant/benign accuracy. The extracted regions of interest are intended as input to a supervised model such as a CNN.
+- The dataset has no ground-truth masks, so results are checked visually. The ISIC 2016 Task 1 masks would allow Dice or IoU evaluation.
+- Low-contrast lesions (for example red vascular lesions) and dense hair are the main failure cases.
+- No classifier is trained. The exported ROIs are the intended input for one.
+
+## History
+
+The original second-year notebook clustered the whole image and kept the smaller cluster, which often selected the dark dermoscope corners instead of the lesion. The field-of-view step and the region selection were added in a 2026 revision.
