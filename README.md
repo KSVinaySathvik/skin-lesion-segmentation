@@ -1,10 +1,10 @@
 # Skin Lesion Segmentation
 
-Team project by J Kowshik and K S Vinay Sathvik, completed in the second year of the B.E. in Artificial Intelligence and Machine Learning at B.N.M. Institute of Technology, Bengaluru.
-
 Unsupervised segmentation of dermoscopic images from the Kaggle
 [Skin Cancer: Malignant vs. Benign](https://www.kaggle.com/datasets/fanconic/skin-cancer-malignant-vs-benign)
 dataset (224 x 224 RGB images from the ISIC archive). The notebook separates the lesion from the surrounding skin and crops a region of interest (ROI) that can be passed to a classifier.
+
+This was a team project by J Kowshik and K S Vinay Sathvik in the second year of the B.E. in Artificial Intelligence and Machine Learning at B.N.M. Institute of Technology, Bengaluru.
 
 ![Segmentation examples](figures/segmentation_examples.png)
 
@@ -17,7 +17,13 @@ dataset (224 x 224 RGB images from the ISIC archive). The notebook separates the
 3. **Refinement.** Morphological opening and closing, hole filling and removal of small blobs. If several regions remain, the one that is large and close to the image centre is kept.
 4. **ROI export.** The bounding box of the final mask is cropped, resized to 128 x 128 and written to `rois/<class>/`.
 
-## Running
+## Repository Structure
+
+- **Skin_Cancer_Lesion_Classification.ipynb**: the full pipeline, from data download to ROI export.
+- **figures/**: the example figure above.
+- **requirements.txt**: Python dependencies.
+
+## Usage
 
 Open `Skin_Cancer_Lesion_Classification.ipynb` on Kaggle with the dataset attached, or in Google Colab, where the data cell downloads it with `kagglehub`. Then run all cells.
 
